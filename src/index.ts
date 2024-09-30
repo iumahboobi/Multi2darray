@@ -1,18 +1,18 @@
-type SquareColor = "white" | "black";
+type SquareColor = "white" | "black";   //ensures only white and black colors are supported
 
 interface Square {
-  color: SquareColor;
+  color: SquareColor;   //represent single color
 }
 
 class Chessboard {
-  private squares: Square[][];
+  private squares: Square[][];    //holds the 8by8 grid of squares
 
-  //create constructor
   constructor() {
-    this.squares = this.createBoard();
+    this.squares = this.createBoard();   // initializes the board by creating board structure
   }
 
-  public createBoard(): Square[][] {
+  //generate grid with alternating colors
+  private createBoard(): Square[][] {   
     const board: Square[][] = [];
 
     for (let row = 0; row < 8; row++) {
@@ -22,26 +22,23 @@ class Chessboard {
         const color: SquareColor = (row + col) % 2 === 0 ? "black" : "white";
         currentRow.push({ color });
       }
-
       board.push(currentRow);
     }
-
     return board;
   }
 
-  // Draw the chessboard on Canvas
+  // Now drawing a chessboard
 
-  public draw(canvas: HTMLCanvasElement) {
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+  public drawChessboard(Canvas: HTMLCanvasElement) {
+    const context = Canvas.getContext("2d");
+    if (!context) return;
 
-    const squareSize = canvas.width / 8;
-
+    const squareSize = Canvas.width / 8;
     for (let row = 0; row < 8; row++) {
-      for (let col = 0; col < 8; col++) {
-        ctx.fillStyle = this.squares[row][col].color;
-        ctx.fillRect(
-          col * squareSize,
+      for (let column = 0; column < 8; column++) {
+        context.fillStyle = this.squares[row][column].color;
+        context.fillRect(
+          column * squareSize,
           row * squareSize,
           squareSize,
           squareSize
@@ -50,11 +47,6 @@ class Chessboard {
     }
   }
 }
-
-// Get dom elements
-
-const canvas = document.getElementById("chessboard");
-const chessboard = new Chessboard();
-//Draw Chessboard
-
-chessboard.draw(canvas as HTMLCanvasElement);
+const canvas = document.getElementById("chessboard") as HTMLCanvasElement;
+const chessBoard = new Chessboard();
+chessBoard.drawChessboard(canvas)
